@@ -4,6 +4,7 @@ using System.IO;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
@@ -212,9 +213,11 @@ namespace AvaloniaGif
         private static void SourceChanged(AvaloniaPropertyChangedEventArgs e)
         {
             var image = e.Sender as GifImage;
-
             if (image == null)
                 return;
+
+            // Dispose existing resources immediately before changing source
+            image.StopAndDispose();
 
             if (e.NewValue is null)
             {
@@ -224,6 +227,12 @@ namespace AvaloniaGif
             image._hasNewSource = true;
             image._newSource = e.NewValue;
             Dispatcher.UIThread.Post(image.InvalidateVisual, DispatcherPriority.Background);
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            StopAndDispose();
+            base.OnUnloaded(e);
         }
     }
 }

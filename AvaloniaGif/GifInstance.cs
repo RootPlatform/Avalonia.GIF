@@ -113,6 +113,7 @@ namespace AvaloniaGif
         public void Dispose()
         {
             CurrentCts.Cancel();
+            _gifDecoder?.Dispose();  // Ensure the decoder is disposed
             _targetBitmap?.Dispose();
         }
 

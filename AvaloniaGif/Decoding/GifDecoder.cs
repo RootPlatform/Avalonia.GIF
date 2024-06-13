@@ -109,6 +109,7 @@ namespace AvaloniaGif.Decoding
             _pixelStack = null;
             _indexBuf = null;
             _backupFrameIndexBuf = null;
+            _fileStream?.Dispose();  // Dispose of the file stream if it's no longer needed
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
